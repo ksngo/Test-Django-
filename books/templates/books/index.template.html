@@ -16,7 +16,9 @@
     </p>
     <ul>
         {% for i in books %}
-            <li> {{i.title}} {{i.ISBN}} {{i.desc}} </li>
+            <li> {{i.title}} {{i.ISBN}} {{i.desc}} 
+            <a href="{% url 'update_book_route' book_id=i.id %}">Edit</a>
+            </li>
         {%endfor%}
     </ul>
 </body>

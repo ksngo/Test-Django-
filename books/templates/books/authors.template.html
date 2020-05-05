@@ -12,7 +12,11 @@
 <body>
 <ul>
     {% for i in authors %}
-     <li> {{i.First_Name}} {{i.Last_Name}} {{i.Date_Of_Birth}}
+     <li> {{i.First_Name}} {{i.Last_Name}} {{i.Date_Of_Birth}} 
+     <a href="{% url 'update_author_route' author_id=i.id %}">Edit</a>
+     
+     </li>
      {%endfor%}
+</ul>
 </body>
 </html>
