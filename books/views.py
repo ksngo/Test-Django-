@@ -104,3 +104,31 @@ def update_author(request, author_id) :
         return render(request, 'books/update.template.html', {
             "form" : author_form
         })
+
+
+
+
+def delete_book(request, book_id):
+
+    book_to_delete = get_object_or_404(Book, pk=book_id)
+
+    if request.method == "POST":
+        book_to_delete.delete()
+        return redirect(index)
+    else:
+        return render(request, "books/delete_book.template.html", {
+        "book" : book_to_delete
+        })
+
+def delete_author(request, author_id) :
+
+    author_to_delete = get_object_or_404(Author, pk=author_id)
+
+    if request.method == "POST" :
+        author_to_delete.delete()
+        return redirect(authors)
+    else: 
+
+        return render(request, "books/delete_author.template.html", {
+        "author" : author_to_delete
+        } )
