@@ -1,4 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect, reverse, get_object_or_404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 from .models import Book, Author
 from .forms import BookForm, AuthorForm
 
@@ -18,13 +20,16 @@ def authors(request):
         "authors" : authors
     })
 
+@login_required
 def create_book(request):
 
     if request.method == "POST" :
         create_form=BookForm(request.POST)
 
         if create_form.is_valid():
+            messages.success(request, f"new book {create_form.title} has been created")
             create_form.save()
+            
             return redirect(reverse(index))
         else: 
             return render(request, "books/create.template.html", {
@@ -38,7 +43,7 @@ def create_book(request):
         "form" : create_form
         })
 
-
+@login_required
 def create_author(request):
 
     if request.method == "POST":
@@ -58,6 +63,7 @@ def create_author(request):
         "form": create_form
     })
 
+@login_required
 def update_book(request, book_id):
 
     book_being_updated = get_object_or_404(Book, pk=book_id)
@@ -81,7 +87,7 @@ def update_book(request, book_id):
         "form": book_form
         })
 
-
+@login_required
 def update_author(request, author_id) :
 
     author_being_updated = get_object_or_404(Author, pk=author_id)
@@ -107,7 +113,7 @@ def update_author(request, author_id) :
 
 
 
-
+@login_required
 def delete_book(request, book_id):
 
     book_to_delete = get_object_or_404(Book, pk=book_id)
@@ -120,6 +126,7 @@ def delete_book(request, book_id):
         "book" : book_to_delete
         })
 
+@login_required
 def delete_author(request, author_id) :
 
     author_to_delete = get_object_or_404(Author, pk=author_id)

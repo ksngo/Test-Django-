@@ -1,27 +1,32 @@
+{%extends 'base.template.html' %}
 {%load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">"
-</head>
-<body>
+{%block content%}
+  <body>
+        {% if request.user.is_authenticated %}
+        <p>Welcome {{request.user}} | <a href="{% url 'account_logout' %}">logout</a> </p>
+        {% else %}
+        <p>Please <a href="/accounts/login">Login</a></p>
+        {%endif%}
+
     <h1>Books</h1>
     <p>
-        Here youcan see all the books that we have
+      Here youcan see all the books that we have
     </p>
     <ul>
-        {% for i in books %}
-            <li> {{i.title}} {{i.ISBN}} {{i.desc}} {{i.genre.title}} {{i.category.title}} {{i.tags.title}}
+      {% for i in books %}
+        <li>
+            {{i.title}} {{i.ISBN}} {{i.desc}} {{i.genre.title}} {{i.category.title}}
+            {% for j in i.tags.all %}
+             ({{j.title}}) 
+            {%endfor%} 
+            {% for j in i.author.all %} 
+                {{j.First_Name}} {{j.Last_Name}}
+            {%endfor%}
             <a href="{% url 'update_book_route' book_id=i.id %}">Edit</a>
             <a href="{% url 'delete_book_route' book_id=i.id %}">Delete</a>
-
-            </li>
-        {%endfor%}
+        </li>
+      {%endfor%}
     </ul>
-</body>
-</html>
+  </body>
+{%endblock%}
