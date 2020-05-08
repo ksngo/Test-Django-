@@ -1,15 +1,44 @@
+{%extends 'base.template.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
+
+{%block title%} index Reviews {%endblock%}
+
+{%block content%}
+
+
+{% if request.user.is_authenticated %}
+<p> Welcome {{request.user}}  | <a href='{% url "account_logout"%}'>logout</a> </p>
+{%else %}
+<p> Please <a href='/accounts/login'> Login </a> </p>
+{%endif%}
+
+
+
 <body>
     <h1> reviews </h1>
-    <p> this is reviews page !</p>
+
+    <table class='table table-striped table-dark'>
+        <thead>
+            <tr>
+                <th> Title </th>
+                <th> content </th>
+                <th> Posted when </th>
+                <th> books </th>
+                <th> &nbsp; </th>
+                <th> &nbsp; </th>
+            </tr>
+        </thead>
+            {% for i in reviews %}
+                <tr>
+                 <td> {{i.title}} </td>
+                 <td> {{i.content}} </td>
+                 <td> {{i.posted_when}} </td>
+                 <td> {{i.book}} </td>
+                 <td> <a href="{% url 'update_review_route' review_id=i.id %}"> Edit </a> </td>
+                 <td> <a href="{% url 'delete_review_route' review_id=i.id %}"> Delete </a> </td>
+                 </tr>
+            {% endfor %}
+    </table>
 </body>
-</html>
+
+{%endblock%}

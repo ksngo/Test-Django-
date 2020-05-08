@@ -27,8 +27,9 @@ def create_book(request):
         create_form=BookForm(request.POST)
 
         if create_form.is_valid():
-            messages.success(request, f"new book {create_form.title} has been created")
-            create_form.save()
+            temporary_variable = create_form.save()
+            messages.success(request, f"new book {temporary_variable.title} has been created")
+            
             
             return redirect(reverse(index))
         else: 

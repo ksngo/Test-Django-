@@ -1,0 +1,27 @@
+{% extends 'base.template.html' %}
+
+{% block title%} Delete review {%endblock%}
+
+{%block content%}
+
+<body>
+
+    <p> are you sure to delete {{review_to_delete.title}} ? </p>
+
+    <form  method="POST">
+
+    {%csrf_token%}
+
+        <input type='submit' class="btn btn-secondary" value="ok">
+        <a href="{% url 'show_reviews_route' %}" > Cancel </a>
+
+    </form>
+
+</body>
+
+
+
+
+
+
+{%endblock%}
