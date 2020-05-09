@@ -21,9 +21,11 @@ def create(request):
         retrieved_reviews_form=ReviewForm(request.POST)
 
         if retrieved_reviews_form.is_valid():
-            
-            temporary_variable = retrieved_reviews_form.save()
-            messages.success(request, f"reviews for {temporary_variable.book} has been created")
+
+            phantom_form = retrieved_reviews_form.save(commit=False)
+            phantom_form.user = request.user
+            temporary_variable = phantom_form.save()
+            messages.success(request, f"reviews for {phantom_form.book} has been created")
 
             return redirect(reverse(index))
         

@@ -4,10 +4,10 @@ from .models import Book, Author
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ("title", "ISBN" , "desc", "genre", "category", "tags", "author")
+        fields = ("title", "ISBN" , "desc", "genre", "category", "tags", "author", "owner")
 
 
 class AuthorForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = ("First_Name", "Last_Name" , "Date_Of_Birth")
+        fields = ("First_Name", "Last_Name" , "Date_Of_Birth", "owner")

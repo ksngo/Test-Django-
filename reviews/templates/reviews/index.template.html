@@ -24,6 +24,7 @@
                 <th> content </th>
                 <th> Posted when </th>
                 <th> books </th>
+                <th> user </th>
                 <th> &nbsp; </th>
                 <th> &nbsp; </th>
             </tr>
@@ -34,6 +35,7 @@
                  <td> {{i.content}} </td>
                  <td> {{i.posted_when}} </td>
                  <td> {{i.book}} </td>
+                 <td> {{i.user}} </td>
                  <td> <a href="{% url 'update_review_route' review_id=i.id %}"> Edit </a> </td>
                  <td> <a href="{% url 'delete_review_route' review_id=i.id %}"> Delete </a> </td>
                  </tr>
