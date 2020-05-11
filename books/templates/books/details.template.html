@@ -1,0 +1,35 @@
+{% extends "base.template.html" %}
+{% load crispy_forms_tags %}
+
+{%block content%}
+
+<h1> {{book.title}} </h1>
+<p> ISBN: {{book.ISBN}} </p>
+<p> Author : {{book.author.First_Name}} {{book.author.Last_Name}} </p>
+<p> Genre: {{book.genre.title}} </p>
+<p> Tags : 
+    {%for t in book.tags.all %}
+        <span class="label">
+            {{t.title}}
+        </span>
+    {%endfor%}
+</p>
+
+{%for r in book.review_set.all %}
+<div class="card">
+    <h3> {{r.title}} </h3>
+    {{r.content}}
+</div>
+<a href="{% url 'view_review_details_route' review_id=r.id%}"> View details </a>
+{%endfor%}
+
+
+<form method="POST" action="{% url 'create_review_route' book_id=book.id %} ">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type='submit'>
+</form>
+
+
+
+{%endblock%}

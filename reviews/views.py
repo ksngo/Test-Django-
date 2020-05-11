@@ -2,7 +2,9 @@ from django.shortcuts import render, HttpResponse, redirect, reverse, get_object
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Review
-from .forms import ReviewForm
+from .forms import ReviewForm, CommentForm
+from books.models import Book
+# from books.views import indexBooks
 
 # Create your views here.
 def index(request):
@@ -15,7 +17,7 @@ def index(request):
     })
 
 @login_required
-def create(request):
+def create(request, book_id):
 
     if request.method == 'POST' :
         retrieved_reviews_form=ReviewForm(request.POST)
@@ -24,6 +26,11 @@ def create(request):
 
             phantom_form = retrieved_reviews_form.save(commit=False)
             phantom_form.user = request.user
+            phantom_form.book = get_object_or_404(Book, pk=book_id)
+            print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+            print(phantom_form.user)
+            print(book_id)
+            print(phantom_form.book)
             temporary_variable = phantom_form.save()
             messages.success(request, f"reviews for {phantom_form.book} has been created")
 
@@ -89,6 +96,28 @@ def delete_review(request, review_id):
 
     
 
+def view_review_details (request, review_id):
 
+    review=get_object_or_404(Review, pk=review_id)
+    comment_form=CommentForm()
 
+    return render(request, 'reviews/details.template.html', {
+        "review" : review,
+        "comment_form" : comment_form
+    })
 
+def process_create_comment (request, review_id) :
+
+    if request.method == "POST" :
+        get_comment_form = CommentForm(request.POST)
+
+        if get_comment_form.is_valid():
+            temp_form = get_comment_form.save(commit=False)
+            temp_form.user = request.user
+            temp_form.review = get_object_or_404(Review, pk=review_id)
+            temp_form.save()
+            messages.success(request, "new comment success added.")
+            return redirect(reverse("view_review_details_route", kwargs={"review_id" : review_id}))
+        else:
+            messages.error(request, "unable to add comment.")
+            return redirect(reverse("view_review_details_route", review_id=review_id))

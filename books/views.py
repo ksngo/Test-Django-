@@ -3,9 +3,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from .models import Book, Author
 from .forms import BookForm, AuthorForm
+from reviews.forms import ReviewForm
 
 # Create your views here.
-def index(request):
+def indexBooks(request):
 
     books = Book.objects.all()
     return render(request,"books/index.template.html",{
@@ -31,7 +32,7 @@ def create_book(request):
             messages.success(request, f"new book {temporary_variable.title} has been created")
             
             
-            return redirect(reverse(index))
+            return redirect(reverse(indexBooks))
         else: 
             return render(request, "books/create.template.html", {
                 "form" : create_form
@@ -74,7 +75,7 @@ def update_book(request, book_id):
         book_form = BookForm(request.POST, instance=book_being_updated)
         if book_form.is_valid():
             book_form.save()
-            return redirect(reverse(index))
+            return redirect(reverse(indexBooks))
         else:
             return render(request, "books/update.template.html", {
                 "form" : book_form
@@ -121,7 +122,7 @@ def delete_book(request, book_id):
 
     if request.method == "POST":
         book_to_delete.delete()
-        return redirect(index)
+        return redirect(indexBooks)
     else:
         return render(request, "books/delete_book.template.html", {
         "book" : book_to_delete
@@ -140,3 +141,20 @@ def delete_author(request, author_id) :
         return render(request, "books/delete_author.template.html", {
         "author" : author_to_delete
         } )
+
+
+def view_book_details(request, book_id):
+    print("in view book details function,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    print(book_id)
+    book = get_object_or_404(Book, pk=book_id)
+    print(book)
+    review_form = ReviewForm()
+
+    return render(request, "books/details.template.html",{
+        "book" : book,
+        'form' : review_form
+    })
+
+
+
+

@@ -18,7 +18,8 @@
     <ul>
       {% for i in books %}
         <li>
-            {{i.title}} {{i.ISBN}} {{i.desc}} {{i.genre.title}} {{i.category.title}}
+            <a href="{% url 'view_book_details' book_id=i.id%}">{{i.title}} </a>
+            {{i.ISBN}} {{i.desc}} {{i.genre.title}} {{i.category.title}}
             {% for j in i.tags.all %}
              ({{j.title}}) 
             {%endfor%} 

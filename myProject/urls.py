@@ -19,7 +19,7 @@ import books.views
 import reviews.views
 
 urlpatterns = [
-    path('', books.views.index),
+    path('', books.views.indexBooks),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('books/', include('books.urls')),

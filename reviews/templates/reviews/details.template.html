@@ -1,0 +1,35 @@
+{%extends 'base.template.html' %}
+{% load crispy_forms_tags %}
+
+{%block content %}
+
+
+<article>
+    <h1>Review title:  {{review.title}} </h1>
+    <h2>Book title: {{review.book.title}} </h2>
+    <h3>Username: {{review.user.username}} </h3>
+    <p>Content: {{review.content}} </p>
+    <p>Posted on: {{review.posted_when}} </p>
+</article>
+
+{%for i in review.comment_set.all %}
+
+    <p> comment content: {{i.content}} </p>
+    <p> comment by user: {{i.user}} </p>
+    <p> date : {{i.posted_when}} </p>
+    <p> review : {{i.review}} </p> <br/>
+
+{%endfor%}
+
+
+<h2> Add a comment </h2>
+<form method="POST" action="{% url 'process_create_comment_route' review_id=review.id %}">
+
+    {% csrf_token %}
+    {{ comment_form|crispy }}
+    <input type="submit">
+
+</form>
+
+
+{%endblock%}
